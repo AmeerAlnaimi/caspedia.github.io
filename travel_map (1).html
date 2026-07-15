@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Map – Caspedia</title>
+  <link rel="icon" type="image/jpeg" href="Cas_Junior_Logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Linux+Libertine+Display:ital@0;1&family=Linux+Biolinum:wght@400;600&family=Georgia&display=swap"
+    rel="stylesheet" />
+  <script data-goatcounter="https://ameeralnaimi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+  <style>
+    html {
+      overflow-y: scroll;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --white: #ffffff;
+      --bg: #f8f9fa;
+      --bg-infobox: #f8f9fa;
+      --border: #a2a9b1;
+      --border-light: #eaecf0;
+      --link: #3366cc;
+      --link-visited: #795cb2;
+      --text: #202122;
+      --text-muted: #54595d;
+      --header-bg: #ffffff;
+      --font-serif: 'Linux Libertine Display', 'Georgia', serif;
+      --font-sans: 'Linux Biolinum', 'Arial', sans-serif;
+      --font-body: 'Georgia', serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:visited {
+      color: var(--link-visited);
+    }
+
+    /* ── TOP HEADER ── */
+    #mw-head {
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      top: 0;
+      z-index: 100;
+    }
+
+    .mw-head-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 16px;
+      height: 50px;
+    }
+
+    .mw-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .mw-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .mw-logo-text {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .mw-logo-text span {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .mw-search {
+      flex: 1;
+      max-width: 500px;
+      margin-left: auto;
+      position: relative;
+    }
+
+    .mw-search input {
+      width: 100%;
+      padding: 6px 36px 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 13px;
+      font-family: var(--font-sans);
+      background: var(--white);
+      color: var(--text);
+      outline: none;
+    }
+
+    .mw-search input:focus {
+      border-color: #3366cc;
+      box-shadow: 0 0 0 2px rgba(51, 102, 204, 0.15);
+    }
+
+    .mw-search-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 34px;
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-left: none;
+      border-radius: 0 2px 2px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .mw-search-btn:hover {
+      background: #e8e8e8;
+    }
+
+    .mw-nav-links {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+      font-family: var(--font-sans);
+      font-size: 12px;
+    }
+
+    .mw-nav-links a {
+      color: var(--text-muted);
+    }
+
+    .mw-nav-links a:hover {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .header-version-tag {
+      position: absolute;
+      top: 12px;
+      right: 20px;
+      font-family: var(--font-serif, Georgia, serif);
+      font-size: 13px;
+      font-weight: 600;
+      color: #000000;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* ── PAGE TABS ── */
+    #mw-tabs {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mw-tabs-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      padding: 0 16px 0 200px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+    }
+
+    .mw-tab {
+      padding: 6px 14px;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      bottom: -1px;
+    }
+
+    .mw-tab.active {
+      background: var(--white);
+      border-color: var(--border);
+      border-bottom-color: var(--white);
+      color: var(--text);
+    }
+
+    .mw-tab:hover:not(.active) {
+      background: #f0f0f0;
+      border-color: #c8ccd1;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    #content-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      padding: 16px;
+      gap: 16px;
+    }
+
+    /* ── SIDEBAR ── */
+    #mw-sidebar {
+      width: 180px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo-large {
+      text-align: center;
+      padding: 12px 0 16px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-logo-large img {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      margin: 0 auto 6px;
+      display: block;
+    }
+
+    .sidebar-logo-large .site-name {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--text);
+      display: block;
+    }
+
+    .sidebar-logo-large .tagline {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-section {
+      margin-bottom: 16px;
+    }
+
+    .sidebar-section h3 {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 6px;
+    }
+
+    .sidebar-section ul {
+      list-style: none;
+    }
+
+    .sidebar-section ul li {
+      padding: 2px 0;
+    }
+
+    .sidebar-section ul li a {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      color: var(--link);
+    }
+
+    /* ── ARTICLE CONTENT ── */
+    #mw-content {
+      flex: 1;
+      min-width: 0;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      padding: 24px 28px;
+    }
+
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: normal;
+      color: var(--text);
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 4px;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .section-heading {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: normal;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 3px;
+      margin: 28px 0 14px;
+    }
+
+    /* ── CATEGORIES ── */
+    .categories {
+      border-top: 1px solid var(--border);
+      margin-top: 28px;
+      padding-top: 10px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .categories strong {
+      color: var(--text);
+    }
+
+    .categories a {
+      margin: 0 4px;
+    }
+
+    /* ── FOOTER ── */
+    #mw-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+      padding: 16px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    #mw-footer ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 8px;
+    }
+
+    #mw-footer ul li::after {
+      content: ' · ';
+    }
+
+    #mw-footer ul li:last-child::after {
+      content: '';
+    }
+
+    #mw-footer ul li a {
+      color: var(--link);
+    }
+
+    /* ── TRAVEL MAP LAYOUT ── */
+    #travel-map-wrap {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+
+    #globe-container {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      background: #0a1628;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    #globe-canvas {
+      display: block;
+      width: 100%;
+      cursor: grab;
+    }
+
+    #globe-canvas:active {
+      cursor: grabbing;
+    }
+
+    #globe-tooltip {
+      position: absolute;
+      background: rgba(10, 22, 40, 0.92);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      pointer-events: none;
+      display: none;
+      border: 1px solid #3366cc;
+      max-width: 220px;
+      line-height: 1.5;
+      z-index: 50;
+    }
+
+    #globe-tooltip strong {
+      font-size: 13.5px;
+      color: #a8c4ff;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ── LEADERBOARD ── */
+    #leaderboard {
+      width: 230px;
+      flex-shrink: 0;
+      font-family: var(--font-sans);
+    }
+
+    .lb-title {
+      background: #0a1628;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .lb-subtitle {
+      font-size: 10px;
+      font-weight: normal;
+      opacity: 0.65;
+      letter-spacing: 0;
+      text-transform: none;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .lb-list {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      overflow: hidden;
+    }
+
+    .lb-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: 13px;
+    }
+
+    .lb-row:last-child {
+      border-bottom: none;
+    }
+
+    .lb-row:hover {
+      background: #eaf0ff;
+    }
+
+    .lb-row.selected {
+      background: #dce8ff;
+      border-left: 3px solid #3366cc;
+    }
+
+    .lb-rank {
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--text-muted);
+      width: 18px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .lb-rank.gold {
+      color: #b8860b;
+    }
+
+    .lb-rank.silver {
+      color: #888;
+    }
+
+    .lb-rank.bronze {
+      color: #a0522d;
+    }
+
+    .lb-name {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .lb-count {
+      font-size: 12px;
+      font-weight: bold;
+      color: #3366cc;
+      background: #eaf0ff;
+      border-radius: 10px;
+      padding: 2px 8px;
+      flex-shrink: 0;
+    }
+
+    .lb-flag {
+      font-size: 18px;
+    }
+
+    .lb-hint {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .lb-clear {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      padding: 6px;
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .lb-clear:hover {
+      background: #e8e8e8;
+    }
+
+    /* ── LEGEND ── */
+    .map-legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    /* Mobile */
+    @media (max-width: 426px) {
+      #auth-nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      .mw-search,
+      #uae-clock-container {
+        display: none !important;
+      }
+
+      #mw-head {
+        height: auto;
+      }
+
+      .mw-head-inner {
+        height: auto;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .mw-tabs-inner {
+        padding-left: 16px;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #content-wrap {
+        flex-direction: column-reverse;
+        padding: 12px;
+      }
+
+      #mw-sidebar {
+        width: 100%;
+        border-top: 1px solid var(--border-light);
+        padding-top: 20px;
+        margin-top: 20px;
+      }
+
+      .sidebar-logo-large {
+        display: none;
+      }
+
+      #mw-content {
+        padding: 16px;
+      }
+
+      #travel-map-wrap {
+        flex-direction: column;
+      }
+
+      #leaderboard {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 1028px) {
+      #github-latest-version {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #uae-clock-container {
+        display: none !important;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP HEADER -->
+  <div id="mw-head">
+    <div class="mw-head-inner">
+      <a class="mw-logo" href="index.html">
+        <img class="mw-logo-icon" src="Cas_Junior_Logo.jpg" alt="Caspedia Logo" />
+        <div class="mw-logo-text">
+          Caspedia
+          <span>The Free Encyclopedia</span>
+        </div>
+      </a>
+      <div class="mw-search">
+        <input type="search" id="search-input" placeholder="Search Caspedia"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();handleSearch();}" />
+        <button class="mw-search-btn" aria-label="Search"
+          onclick="event.preventDefault();handleSearch();">&#128269;</button>
+      </div>
+      <nav class="mw-nav-links" id="auth-nav-links">
+        <a href="#">Create account</a>
+        <a href="#">Log in</a>
+      </nav>
+      <a href="https://github.com/AmeerAlnaimi/Caspedia.Uk" target="_blank" rel="noopener noreferrer"
+        class="github-link" title="Visit our GitHub repository">
+        <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+          <path
+            d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82A7.48 7.48 0 0 0 8 3c-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z">
+          </path>
+        </svg>
+      </a>
+      <a href="https://www.instagram.com/cas.jrs27/" target="_blank" rel="noopener noreferrer" class="instagram-link"
+        title="Follow us on Instagram">
+        <svg height="20" width="20" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+        </svg>
+      </a>
+      <li id="uae-clock-container"
+        style="color:#54595d;font-size:0.75rem;padding:0 10px;display:inline-flex;align-items:center;">
+        <span id="uae-clock"
+          style="font-weight:bold;margin-left:5px;display:inline-block;width:165px;font-variant-numeric:tabular-nums;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">Loading...</span>
+      </li>
+    </div>
+    <span id="github-latest-version" class="header-version-tag">Loading...</span>
+  </div>
+
+  <!-- PAGE TABS -->
+  <div id="mw-tabs">
+    <div class="mw-tabs-inner">
+      <div class="mw-tab"><a href="index.html" style="color:inherit;text-decoration:none;">Article</a></div>
+      <div class="mw-tab"><a href="events.html" style="color:inherit;text-decoration:none;">Events</a></div>
+      <div class="mw-tab"><a href="football.html" style="color:inherit;text-decoration:none;">Football</a></div>
+      <div class="mw-tab"><a href="about.html" style="color:inherit;text-decoration:none;">About Caspedia</a></div>
+      <div class="mw-tab"><a href="contact_us.html" style="color:inherit;text-decoration:none;">Contact Us</a></div>
+      <div class="mw-tab"><a href="contributors.html" style="color:inherit;text-decoration:none;">Contributors</a></div>
+      <div class="mw-tab active"><a href="travel_map.html" style="color:inherit;text-decoration:none;">Travel Map</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="content-wrap">
+
+    <!-- SIDEBAR -->
+    <aside id="mw-sidebar">
+      <div class="sidebar-logo-large">
+        <img src="Cas_Junior_Logo.jpg" alt="Caspedia Logo" />
+        <span class="site-name">Caspedia</span>
+        <span class="tagline">The Free Encyclopedia</span>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Navigation</h3>
+        <ul>
+          <li><a href="index.html">Main page</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="football.html">Football</a></li>
+          <li><a href="about.html">About Caspedia</a></li>
+          <li><a href="contact_us.html">Contact us</a></li>
+          <li><a href="contributors.html">Contributors</a></li>
+          <li><a href="travel_map.html"><strong>Travel Map</strong></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Contribute</h3>
+        <ul>
+          <li><a href="https://github.com/AmeerAlnaimi/Caspedia.Uk#readme">Help</a></li>
+          <li><a href="https://github.com/AmeerAlnaimi/Caspedia.Uk/releases">Recent changes</a></li>
+          <li><a href="https://github.com/AmeerAlnaimi/Caspedia.Uk/issues">Suggest an Edit</a></li>
+          <li><a href="https://form.jotform.com/261546469303056">Report a Bug</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Languages</h3>
+        <ul>
+          <li><a href="#">English</a></li>
+          <li><span style="color:var(--text-muted);font-family:var(--font-sans);font-size:12.5px;">Arabic <em>(coming
+                soon)</em></span></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ARTICLE CONTENT -->
+    <main id="mw-content">
+
+      <h1 class="page-title">✈️ Travel Map</h1>
+      <p class="page-subtitle">From Caspedia, the free encyclopedia — tracking where our members have travelled across
+        the world</p>
+
+      <p style="font-family:var(--font-sans);font-size:13px;color:var(--text);margin-bottom:18px;line-height:1.7;">
+        A fun, interactive initiative tracking every country our members have visited. Hover over any highlighted
+        country to see who's been there. Click a member's name in the leaderboard to highlight their countries.
+        The member with the most countries earns the <strong>🏆 Traveler Title</strong>.
+      </p>
+
+      <!-- MAP + LEADERBOARD -->
+      <div id="travel-map-wrap">
+
+        <!-- GLOBE -->
+        <div id="globe-container">
+          <canvas id="globe-canvas"></canvas>
+          <div id="globe-tooltip"></div>
+        </div>
+
+        <!-- LEADERBOARD -->
+        <div id="leaderboard">
+          <div class="lb-title">
+            🏆 Leaderboard
+            <span class="lb-subtitle">Click a name to highlight their countries</span>
+          </div>
+          <div class="lb-list" id="lb-list"></div>
+          <button class="lb-clear" id="lb-clear-btn">✕ Clear filter</button>
+          <p class="lb-hint">Countries visited by our members</p>
+        </div>
+      </div>
+
+      <!-- LEGEND -->
+      <div class="map-legend" style="margin-top:12px;">
+        <span><span class="legend-dot" style="background:#2d6a4f;"></span> Visited</span>
+        <span><span class="legend-dot" style="background:#52b788;"></span> Selected member</span>
+        <span><span class="legend-dot" style="background:#1d3557;"></span> Unvisited</span>
+        <span><span class="legend-dot" style="background:#e63946;"></span> Hovered</span>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="categories">
+        <div class="page-info"
+          style="font-family:var(--font-sans);font-size:11.9px;color:#494949;border-top:1px solid var();padding-top:1px;margin-top:1px;margin-bottom:4px;">
+          This page was last edited on 16 July 2026, at 14:00 (GMT+4).
+        </div>
+        <strong>Categories:</strong>
+        <a href="#">Travel</a> ·
+        <a href="#">Members</a> ·
+        <a href="#">2025–2026</a> ·
+        <a href="#">Interactive</a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="mw-footer">
+    <ul>
+      <li><a href="privacy_policy.html">Privacy policy</a></li>
+      <li><a href="about.html">About Caspedia</a></li>
+      <li><a href="#">Disclaimers</a></li>
+      <li><a href="contact_us.html">Contact Caspedia</a></li>
+      <li><a href="code_of_conduct.html">Code of conduct</a></li>
+      <li><a href="#">Developers</a></li>
+      <li><a href="statistics.html">Statistics</a></li>
+      <li><a href="#">Cookie statement</a></li>
+    </ul>
+    <p>Text is available under the <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+        Commons Attribution-ShareAlike License 4.0</a>; anyone reusing this content must
+      provide attribution and a link back to Caspedia.uk</p>
+    <p style="margin-top:6px;">Caspedia™ is a student-run informational project. Content is for demonstration and
+      educational purposes.</p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════════════════════════════════ -->
+
+  <!-- UAE Clock -->
+  <script>
+    function updateUAEClock() {
+      const el = document.getElementById('uae-clock');
+      if (!el) return;
+      el.textContent = new Date().toLocaleString('en-US', {
+        timeZone: 'Asia/Dubai', weekday: 'short', month: 'short',
+        day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+      });
+    }
+    updateUAEClock();
+    setInterval(updateUAEClock, 1000);
+  </script>
+
+  <!-- Search -->
+  <script>
+    function handleSearch() {
+      const q = document.getElementById('search-input').value.trim();
+      if (!q) return;
+      alert('Searching for: ' + q);
+    }
+  </script>
+
+  <!-- GitHub Version -->
+  <script>
+    document.addEventListener("DOMContentLoaded", fetchLatestReleaseVersion);
+    async function fetchLatestReleaseVersion() {
+      const versionTag = document.getElementById("github-latest-version");
+      try {
+        const r = await fetch('https://api.github.com/repos/AmeerAlnaimi/Caspedia.Uk/releases/latest');
+        versionTag.textContent = r.ok ? (await r.json()).tag_name : 'v1.0.0';
+      } catch { versionTag.textContent = 'v1.0.0'; }
+    }
+  </script>
+
+  <!-- ═══════════════ TRAVEL MAP ENGINE ═══════════════ -->
+  <script>
+    // ─────────────────────────────────────────────────────
+    // TRAVEL DATA  ←  Edit this object to add members/countries
+    // ─────────────────────────────────────────────────────
+    const TRAVEL_DATA = [
+      {
+        name: "Ameer M. Alnaimi",
+        emoji: "🇶🇦",
+        countries: ["Qatar", "United Arab Emirates", "Saudi Arabia", "Egypt", "Turkey", "United Kingdom", "France", "Germany", "Italy", "United States of America", "Japan", "Malaysia", "Bahrain"]
+      },
+      {
+        name: "Mohammad Emad",
+        emoji: "🌍",
+        countries: ["Qatar", "Egypt", "Jordan", "Turkey", "Spain", "Morocco"]
+      },
+      {
+        name: "Khalid W.",
+        emoji: "🌏",
+        countries: ["Qatar", "United Arab Emirates", "Oman", "Thailand", "Malaysia", "Indonesia"]
+      },
+      {
+        name: "Rashid",
+        emoji: "🌎",
+        countries: ["Qatar", "Saudi Arabia", "Kuwait", "United Kingdom", "Canada"]
+      },
+      {
+        name: "Ward Muhammad J.",
+        emoji: "🌐",
+        countries: ["Qatar", "Lebanon", "France", "Germany"]
+      }
+    ];
+
+    // ─────────────────────────────────────────────────────
+    // BIOME COLOURS — subtle land texture per climate zone
+    // ─────────────────────────────────────────────────────
+    function getBiome(feature) {
+      const lat = feature.properties.LABEL_Y || feature.properties.LAT || 0;
+      const n = (feature.properties.ADMIN || feature.properties.name || '').toLowerCase();
+      const absLat = Math.abs(lat);
+
+      const deserts = ['saudi arabia', 'egypt', 'libya', 'algeria', 'mali', 'niger', 'chad', 'mauritania', 'sudan', 'oman', 'united arab emirates', 'qatar', 'kuwait', 'bahrain', 'iraq', 'iran', 'namibia', 'botswana', 'mongolia', 'pakistan', 'afghanistan', 'djibouti', 'eritrea', 'somalia', 'western sahara', 'jordan', 'syria', 'yemen', 'israel', 'palestine'];
+      const tropics = ['brazil', 'indonesia', 'malaysia', 'colombia', 'congo', 'cameroon', 'gabon', 'equatorial guinea', 'central african republic', 'democratic republic of the congo', 'myanmar', 'thailand', 'laos', 'vietnam', 'cambodia', 'philippines', 'ghana', 'ivory coast', 'nigeria', 'papua new guinea', 'costa rica', 'panama', 'ecuador', 'peru', 'bolivia', 'sri lanka', 'bangladesh', 'india', 'venezuela'];
+      const arctic = ['greenland', 'iceland', 'norway', 'finland', 'sweden'];
+      const snowy = ['russia', 'canada'];
+      const temperate = ['france', 'germany', 'poland', 'ukraine', 'austria', 'switzerland', 'czech republic', 'slovakia', 'hungary', 'romania', 'bulgaria', 'serbia', 'croatia', 'slovenia', 'belgium', 'netherlands', 'luxembourg', 'united kingdom', 'ireland', 'portugal', 'spain', 'italy', 'greece', 'albania', 'north macedonia', 'bosnia and herzegovina', 'montenegro', 'moldova', 'latvia', 'lithuania', 'estonia', 'belarus', 'new zealand', 'chile', 'argentina', 'japan', 'south korea', 'china', 'united states of america', 'mexico', 'turkey'];
+
+      if (deserts.some(d => n.includes(d))) return { land: '#c4a265', dark: '#a07840', light: '#d9bc8a' };
+      if (tropics.some(d => n.includes(d))) return { land: '#2e6b35', dark: '#1a4020', light: '#3d8c47' };
+      if (arctic.some(d => n.includes(d))) return { land: '#d8e8f0', dark: '#9ab0c8', light: '#eaf2f8' };
+      if (snowy.some(d => n.includes(d))) return { land: '#7a9e7e', dark: '#4a6e4e', light: '#9ab89e' };
+      if (absLat > 55) return { land: '#b8ccd8', dark: '#8aaabb', light: '#ccdde8' };
+      if (absLat > 40) return { land: '#5a8a50', dark: '#3a6030', light: '#72a868' };
+      if (temperate.some(d => n.includes(d))) return { land: '#5a8a50', dark: '#3a6030', light: '#72a868' };
+      return { land: '#6b9955', dark: '#4a7035', light: '#82b06a' };
+    }
+
+    // ─────────────────────────────────────────────────────
+    // BUILD LOOKUP MAPS
+    // ─────────────────────────────────────────────────────
+    // countryMap: { "Qatar": ["Ameer M. Alnaimi", ...], ... }
+    const countryMap = {};
+    TRAVEL_DATA.forEach(member => {
+      member.countries.forEach(c => {
+        if (!countryMap[c]) countryMap[c] = [];
+        countryMap[c].push(member.name);
+      });
+    });
+
+    // ─────────────────────────────────────────────────────
+    // LEADERBOARD
+    // ─────────────────────────────────────────────────────
+    const sorted = [...TRAVEL_DATA].sort((a, b) => b.countries.length - a.countries.length);
+    const lbList = document.getElementById('lb-list');
+    const rankLabels = ['🥇', '🥈', '🥉'];
+    const rankClasses = ['gold', 'silver', 'bronze'];
+
+    sorted.forEach((m, i) => {
+      const row = document.createElement('div');
+      row.className = 'lb-row';
+      row.dataset.name = m.name;
+      row.innerHTML = `
+      <span class="lb-rank ${rankClasses[i] || ''}">${rankLabels[i] || (i + 1)}</span>
+      <span class="lb-flag">${m.emoji}</span>
+      <span class="lb-name">${m.name}</span>
+      <span class="lb-count">${m.countries.length}</span>
+    `;
+      row.addEventListener('click', () => selectMember(m.name));
+      lbList.appendChild(row);
+    });
+
+    document.getElementById('lb-clear-btn').addEventListener('click', () => {
+      selectedMember = null;
+      document.querySelectorAll('.lb-row').forEach(r => r.classList.remove('selected'));
+      draw();
+    });
+
+    // ─────────────────────────────────────────────────────
+    // CANVAS + GLOBE STATE
+    // ─────────────────────────────────────────────────────
+    const canvas = document.getElementById('globe-canvas');
+    const ctx = canvas.getContext('2d');
+    const tooltip = document.getElementById('globe-tooltip');
+
+    let W, H, scale, cx, cy;
+    let rotation = 0;       // longitude offset in degrees
+    let tilt = 20;      // latitude tilt in degrees (fixed)
+    let dragging = false;
+    let lastX = 0;
+    let velocity = 0;       // momentum for smooth inertia
+    let hoveredCountry = null;
+    let selectedMember = null;
+    let geoData = null;          // GeoJSON features
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      W = Math.floor(rect.width);
+      H = Math.max(560, Math.floor(W * 0.72));
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      scale = Math.min(W, H) * 0.46;
+      cx = W / 2;
+      cy = H / 2;
+      if (geoData) draw();
+    }
+
+    // ─────────────────────────────────────────────────────
+    // PROJECTION  (simple orthographic with tilt)
+    // ─────────────────────────────────────────────────────
+    function project(lon, lat) {
+      const λ = (lon + rotation) * Math.PI / 180;
+      const φ = lat * Math.PI / 180;
+      const tiltRad = tilt * Math.PI / 180;
+
+      // Rotate around Y then tilt around X
+      const x0 = Math.cos(φ) * Math.sin(λ);
+      const y0 = Math.sin(φ);
+      const z0 = Math.cos(φ) * Math.cos(λ);
+
+      const y1 = y0 * Math.cos(tiltRad) - z0 * Math.sin(tiltRad);
+      const z1 = y0 * Math.sin(tiltRad) + z0 * Math.cos(tiltRad);
+
+      if (z1 < 0) return null;   // behind the globe
+      return [cx + x0 * scale, cy - y1 * scale];
+    }
+
+    function isVisible(lon, lat) {
+      return project(lon, lat) !== null;
+    }
+
+    // ─────────────────────────────────────────────────────
+    // DRAW
+    // ─────────────────────────────────────────────────────
+    function draw() {
+      if (!geoData) return;
+      ctx.clearRect(0, 0, W, H);
+
+      // Atmosphere glow (outer ring)
+      const atmo = ctx.createRadialGradient(cx, cy, scale * 0.92, cx, cy, scale * 1.12);
+      atmo.addColorStop(0, 'rgba(80,140,255,0.18)');
+      atmo.addColorStop(1, 'rgba(80,140,255,0)');
+      ctx.beginPath();
+      ctx.arc(cx, cy, scale * 1.12, 0, Math.PI * 2);
+      ctx.fillStyle = atmo;
+      ctx.fill();
+
+      // Ocean
+      const grad = ctx.createRadialGradient(cx - scale * 0.25, cy - scale * 0.25, scale * 0.05, cx, cy, scale);
+      grad.addColorStop(0, '#1a3a5c');
+      grad.addColorStop(0.6, '#0d2137');
+      grad.addColorStop(1, '#060e1a');
+      ctx.beginPath();
+      ctx.arc(cx, cy, scale, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Graticule (lat/lon grid lines)
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.lineWidth = 0.5;
+      for (let lon = -180; lon <= 180; lon += 30) {
+        drawGreatCircle(lon, 'lon');
+      }
+      for (let lat = -60; lat <= 60; lat += 30) {
+        drawParallel(lat);
+      }
+
+      // Countries
+      const selectedCountries = selectedMember
+        ? TRAVEL_DATA.find(m => m.name === selectedMember)?.countries || []
+        : [];
+
+      geoData.features.forEach(feature => {
+        const name = feature.properties.ADMIN || feature.properties.name || '';
+        const visited = !!countryMap[name];
+        const inFilter = selectedCountries.includes(name);
+        const isHover = name === hoveredCountry;
+
+        let fill;
+        if (isHover) fill = '#e63946';
+        else if (inFilter) fill = '#52b788';
+        else if (visited) fill = '#2d6a4f';
+        else fill = '#1d3557';
+
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+        ctx.lineWidth = 0.4;
+
+        drawFeature(feature);
+      });
+
+      // Globe rim
+      ctx.beginPath();
+      ctx.arc(cx, cy, scale, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(100,160,255,0.25)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Specular highlight (top-left sheen)
+      const sheen = ctx.createRadialGradient(
+        cx - scale * 0.35, cy - scale * 0.35, 0,
+        cx - scale * 0.1, cy - scale * 0.1, scale * 0.7
+      );
+      sheen.addColorStop(0, 'rgba(255,255,255,0.08)');
+      sheen.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.beginPath();
+      ctx.arc(cx, cy, scale, 0, Math.PI * 2);
+      ctx.fillStyle = sheen;
+      ctx.fill();
+    }
+
+    function drawGreatCircle(lon, type) {
+      ctx.beginPath();
+      let first = true;
+      for (let t = -90; t <= 90; t += 2) {
+        const p = project(lon, t);
+        if (!p) { first = true; continue; }
+        first ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
+        first = false;
+      }
+      ctx.stroke();
+    }
+
+    function drawParallel(lat) {
+      ctx.beginPath();
+      let first = true;
+      for (let lon = -180; lon <= 180; lon += 2) {
+        const p = project(lon, lat);
+        if (!p) { first = true; continue; }
+        first ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
+        first = false;
+      }
+      ctx.stroke();
+    }
+
+    function drawFeature(feature) {
+      const geom = feature.geometry;
+      if (!geom) return;
+
+      const polys = geom.type === 'Polygon'
+        ? [geom.coordinates]
+        : geom.type === 'MultiPolygon'
+          ? geom.coordinates
+          : [];
+
+      polys.forEach(poly => {
+        poly.forEach(ring => {
+          ctx.beginPath();
+          let first = true;
+          let anyVisible = false;
+          ring.forEach(([lon, lat]) => {
+            const p = project(lon, lat);
+            if (!p) { first = true; return; }
+            anyVisible = true;
+            first ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]);
+            first = false;
+          });
+          if (anyVisible) {
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+          }
+        });
+      });
+    }
+
+    // ─────────────────────────────────────────────────────
+    // HIT-TEST: find country under mouse
+    // ─────────────────────────────────────────────────────
+    function unproject(px, py) {
+      // Inverse orthographic + tilt
+      const dx = (px - cx) / scale;
+      const dy = (cy - py) / scale;
+      const r2 = dx * dx + dy * dy;
+      if (r2 > 1) return null;
+      const z1 = Math.sqrt(1 - r2);
+      const tiltRad = tilt * Math.PI / 180;
+
+      const y0 = dy * Math.cos(tiltRad) + z1 * Math.sin(tiltRad);
+      const z0 = -dy * Math.sin(tiltRad) + z1 * Math.cos(tiltRad);
+      const x0 = dx;
+
+      const lat = Math.asin(Math.max(-1, Math.min(1, y0))) * 180 / Math.PI;
+      const lon = Math.atan2(x0, z0) * 180 / Math.PI - rotation;
+      return [((lon + 540) % 360) - 180, lat];
+    }
+
+    function pointInPolygon(px, py, ring) {
+      let inside = false;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [xi, yi] = ring[i];
+        const [xj, yj] = ring[j];
+        if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) {
+          inside = !inside;
+        }
+      }
+      return inside;
+    }
+
+    function findCountryAt(px, py) {
+      if (!geoData) return null;
+      const ll = unproject(px, py);
+      if (!ll) return null;
+      const [lon, lat] = ll;
+
+      for (const feature of geoData.features) {
+        const geom = feature.geometry;
+        if (!geom) continue;
+        const polys = geom.type === 'Polygon'
+          ? [geom.coordinates]
+          : geom.type === 'MultiPolygon'
+            ? geom.coordinates
+            : [];
+        for (const poly of polys) {
+          if (pointInPolygon(lon, lat, poly[0])) {
+            return feature.properties.ADMIN || feature.properties.name || null;
+          }
+        }
+      }
+      return null;
+    }
+
+    // ─────────────────────────────────────────────────────
+    // MOUSE / TOUCH EVENTS
+    // ─────────────────────────────────────────────────────
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      if (dragging) {
+        const dx = e.clientX - lastX;
+        velocity = dx * 0.35;
+        rotation += velocity;
+        lastX = e.clientX;
+        hoveredCountry = null;
+        tooltip.style.display = 'none';
+        draw();
+        return;
+      }
+
+      const country = findCountryAt(mx, my);
+      if (country !== hoveredCountry) {
+        hoveredCountry = country;
+        draw();
+      }
+
+      if (country) {
+        const visitors = countryMap[country];
+        tooltip.style.display = 'block';
+        tooltip.style.left = (mx + 14) + 'px';
+        tooltip.style.top = (my - 10) + 'px';
+        if (visitors) {
+          tooltip.innerHTML = `<strong>${country}</strong>Visited by: ${visitors.join(', ')}`;
+        } else {
+          tooltip.innerHTML = `<strong>${country}</strong>No members visited yet`;
+        }
+      } else {
+        tooltip.style.display = 'none';
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      hoveredCountry = null;
+      tooltip.style.display = 'none';
+      draw();
+    });
+
+    canvas.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; velocity = 0; autoRotate = false; });
+    window.addEventListener('mouseup', () => { dragging = false; });
+
+    // Touch drag
+    let lastTouchX = 0;
+    canvas.addEventListener('touchstart', e => {
+      lastTouchX = e.touches[0].clientX;
+      velocity = 0;
+      e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', e => {
+      const dx = e.touches[0].clientX - lastTouchX;
+      velocity = dx * 0.35;
+      rotation += velocity;
+      lastTouchX = e.touches[0].clientX;
+      draw();
+      e.preventDefault();
+    }, { passive: false });
+
+    // ─────────────────────────────────────────────────────
+    // LEADERBOARD FILTER
+    // ─────────────────────────────────────────────────────
+    function selectMember(name) {
+      selectedMember = selectedMember === name ? null : name;
+      document.querySelectorAll('.lb-row').forEach(r => {
+        r.classList.toggle('selected', r.dataset.name === selectedMember);
+      });
+      draw();
+    }
+
+    // ─────────────────────────────────────────────────────
+    // AUTO-ROTATE (slow, gentle)
+    // ─────────────────────────────────────────────────────
+    let autoRotate = true;
+    canvas.addEventListener('mousedown', () => { autoRotate = false; });
+    canvas.addEventListener('touchstart', () => { autoRotate = false; }, { passive: true });
+
+    function animate() {
+      if (!dragging && geoData) {
+        if (autoRotate) {
+          // Gentle auto-rotation
+          rotation -= 0.08;
+          draw();
+        } else if (Math.abs(velocity) > 0.01) {
+          // Momentum inertia after drag
+          rotation += velocity;
+          velocity *= 0.94;  // friction decay
+          draw();
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    // ─────────────────────────────────────────────────────
+    // LOAD GEOJSON  (Natural Earth via CDN, GitHub-compatible)
+    // ─────────────────────────────────────────────────────
+    async function loadGeo() {
+      try {
+        const res = await fetch('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson');
+        geoData = await res.json();
+        resize();
+        animate();
+      } catch (e) {
+        document.getElementById('globe-container').innerHTML =
+          '<p style="color:#aaa;padding:40px;font-family:sans-serif;text-align:center;">⚠️ Could not load map data. Check your internet connection.</p>';
+      }
+    }
+
+    window.addEventListener('resize', resize);
+    loadGeo();
+  </script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "e43a790a8bc4440f9394a65385c4ed2e"}'></script>
+
+</body>
+
+</html>
